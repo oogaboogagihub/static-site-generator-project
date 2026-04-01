@@ -1,18 +1,25 @@
+import os, shutil, sys
+
 from textnode import TextNode
 from generate_page import generate_page, generate_pages_recursive
 
-import os, shutil
-
 def main():
-    # reset public to contents of static
-    rm_dir("./public")
-    copy_dir("./static", "./public")
+    # get base path
+    basepath = ""
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
+
+    # reset public directory to contents of static directory
+    rm_dir("./docs")
+    copy_dir("./static", "./docs")
 
     # generate page
     from_path = "./content/"
     template_path = "./template.html"
-    dest_path = "./public/"
-    generate_pages_recursive(from_path, template_path, dest_path)
+    dest_path = "./docs/"
+    generate_pages_recursive(from_path, template_path, dest_path, basepath)
 
 def rm_dir(destination):
     # make sure destination doesn't already exist
